@@ -4,16 +4,19 @@
         <link rel="shortcut icon" href="#"/>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>What's Up Nigga</h1>
         <div id="future"></div>
         <form id="form" id="chat_form">
-            <input id="chat_input" type="text">
+            <input id= "chat_name" type="text" placeholder="Name Bitch">
+            <input id="chat_input" type="text" placeholder="whats on your mind asshole">
             <input type="submit" value="Send">
         </form>
+        <ul id ="old_msg"></ul>
         <ul id ="messages"></ul>
          <script src="/jquery/dist/jquery.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
+
            //var socket = io();
 //socket.on('connect', function () {
   //console.log('connected!');
@@ -26,16 +29,22 @@
 //});
 
 $(function () {
-    var socket = io()
+    var socket = io.connect()
     $('form').submit(function(e){
       e.preventDefault(); // prevents page reloading
-      socket.emit('chat message', $('#chat_input').val());
+      socket.emit('chat message', $('#chat_input').val(),$('#chat_name').val());
       $('#chat_input').val('');
+      $('#chat_name').val('');
       return false;
     });
-    socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
+    socket.on('chat message', function(msg, name){
+      $('#messages').append($('<li>').text(name + ': ' + msg));
     });
+    socket.on('load old messages', function(docs) {
+      $.each(docs, function() {
+        $("#old_msg").append("<li>" + this.name + ": " + this.text + "</li>");
+    });
+      });
   });
 
         </script>
