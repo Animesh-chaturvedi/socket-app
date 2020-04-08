@@ -4,11 +4,23 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
 User = require('./public/modules/user.js');
 Message = require('./public/modules/message.js');
 //var routes = require('/public/routes')
 
-
+app.use(session({
+  secret:"smoke weed everyday",
+  resave : false,
+  saveUninitialized : false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 app.use(express.static(__dirname + '/node_modules'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
@@ -30,11 +42,49 @@ app.get('/', function(req, res,next) {
 });
 
 
-app.get('/chat', function(req, res,next) {
+app.get('/chat',isLoggedIn, function(req, res,next) {
   res.sendFile(__dirname + '/public/index.html');
-
 });
 
+
+app.get("/login",function(req, res, next){
+  res.sendFile(__dirname + '/public/login.html');
+});
+
+
+
+app.get("/logout",function(req, res){
+  req.logOut();
+  res.redirect("/login");
+})
+
+
+app.post("/",function(req,res){
+  var newUser = new User({username: req.body.username});
+  User.register(newUser, req.body.password, function(err,user){
+     if(err){
+       console.log(err);
+       res.redirect("/")
+     }
+     passport.authenticate("local")(req,res,function(){
+       res.redirect("/chat");
+     })
+  })
+});
+
+app.post("/login", passport.authenticate("local",{
+  successRedirect:"/chat",
+  failureRedirect:"/login"
+}));
+
+
+//FUNCTION TO CHECK USER LOGIN
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+    return next()
+  }
+  res.redirect("/login");
+}
 
 io.on('connection', function(socket) {
     console.log('connected socket!');
@@ -46,6 +96,9 @@ io.on('connection', function(socket) {
      //console.log(socket.id);
       //socket.emit('respond', { hello: 'Hey, Mr.Client!' });
      //});
+
+
+     
      Message.find({}, function(err, docs) {
       if(err) throw err;
       console.log('sending previous messages');
