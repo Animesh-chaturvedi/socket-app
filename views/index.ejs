@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="shortcut icon" href="#" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 style="text-align: center;">COViD HELPLiNE</h1>
+      <h4>Hello <%= username %></h4>
+      <div id="future" class="form-group"></div>
+      <form id="form" id="chat_form">
+        <input id="chat_name" type="text" placeholder="User Name" />
+
+        <input id="chat_input" type="text" placeholder="Write Your Massege" />
+        <input type="submit" value="Send" />
+      </form>
+      <ul id="old_msg" class=""></ul>
+      <ul id="messages"></ul>
+    </div>
+    <script src="/jquery/dist/jquery.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      //var socket = io();
+      //socket.on("connect", function () {
+      //console.log("connected!");
+      //socket.emit("greet", { message: "Hello Mr.Server!" });
+      //});
+
+      //socket.on("respond", function (data) {
+      //alert(Object.values(data));
+      //console.log(data);
+      //});
+      var socket = io.connect();
+      $(function () {
+        $("form").submit(function (e) {
+          e.preventDefault();
+        });
+        $("form").submit(function (socket) {
+          socket.emit(
+            "chat message",
+            $("#chat_input").val(),
+            $("#chat_name").val()
+          );
+          $("#chat_input").val("");
+          $("#chat_name").val("");
+          return false;
+        });
+        socket.on("chat message", function (msg, name) {
+          $("#messages").append($("<li>").text(name + ": " + msg));
+        });
+      });
+
+      socket.on("load old messages", function (docs) {
+        $.each(docs, function () {
+          $("#old_msg").append("<li>" + this.name + ": " + this.text + "</li>");
+        });
+      });
+    </script>
+  </body>
+</html>
