@@ -1,14 +1,56 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="shortcut icon" href="#"/>
-    </head>
- <body>  
-   <h1>SignUp</h1>
-  <form action="/" method="POST">
-    <input type="text" name="username" placeholder="name">
-    <input type="password" name="password" placeholder="pasword">
-    <button>Submit</button>
-  </form>
-</body>
+  <head>
+    <link rel="shortcut icon" href="#" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="body">
+    <h1 class="header">COViD HELPLiNE</h1>
+    <h1 class="user container">SignUp</h1>
+    <div class="form-group container">
+      <form action="/" method="POST" class="form container">
+        <input
+          type="text"
+          name="username"
+          placeholder="name"
+          class="form-control space"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="pasword"
+          class="form-control space"
+        />
+        <button class="btn btn-info space">Submit</button>
+      </form>
+    </div>
+    <style>
+      .header {
+        background-color: #25d355;
+        text-align: center;
+        color: #075e54;
+        font-size: 60px;
+      }
+      .body {
+        background-color: aliceblue;
+      }
+      .form {
+        background-color: aliceblue;
+        text-align: center;
+      }
+      .space {
+        padding: 3px;
+        margin: 3px;
+      }
+      .user {
+        color: #2acdae;
+        font-size: 50px;
+      }
+    </style>
+  </body>
 </html>

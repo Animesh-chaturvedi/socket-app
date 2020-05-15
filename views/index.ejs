@@ -9,24 +9,36 @@
       crossorigin="anonymous"
     />
   </head>
-  <body>
-    <div class="container">
-      <h1 style="text-align: center;">COViD HELPLiNE</h1>
-      <h4>Hello <%= username %></h4>
-      <div id="future" class="form-group"></div>
-      <form id="form" id="chat_form">
-        <input id="chat_name" type="text" placeholder="User Name" />
+  <body class="body">
+    <div>
+      <h1 class="header">COViD HELPLiNE</h1>
+      <h4 class="user">Hello <%= username %></h4>
+      <div id="future" class="form-group container"></div>
+      <form id="form" id="chat_form" class="form container">
+        <input
+          id="chat_name"
+          type="text"
+          placeholder="User Name"
+          class="form-control space"
+        />
 
-        <input id="chat_input" type="text" placeholder="Write Your Massege" />
-        <input type="submit" value="Send" />
+        <input
+          id="chat_input"
+          type="text"
+          placeholder="Write Your Massege"
+          class="form-control space"
+        />
+        <input type="submit" value="Send" class="btn btn-info space" />
       </form>
-      <ul id="old_msg" class=""></ul>
-      <ul id="messages"></ul>
+      <div class="container messages">
+        <ul id="old_msg" style="list-style-type: none;"></ul>
+        <ul id="messages" style="list-style-type: none;"></ul>
+      </div>
     </div>
     <script src="/jquery/dist/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      //var socket = io();
+      //var socket = io178C51();
       //socket.on("connect", function () {
       //console.log("connected!");
       //socket.emit("greet", { message: "Hello Mr.Server!" });
@@ -41,7 +53,7 @@
         $("form").submit(function (e) {
           e.preventDefault();
         });
-        $("form").submit(function (socket) {
+        $("form").submit(function () {
           socket.emit(
             "chat message",
             $("#chat_input").val(),
@@ -54,13 +66,44 @@
         socket.on("chat message", function (msg, name) {
           $("#messages").append($("<li>").text(name + ": " + msg));
         });
-      });
 
-      socket.on("load old messages", function (docs) {
-        $.each(docs, function () {
-          $("#old_msg").append("<li>" + this.name + ": " + this.text + "</li>");
+        socket.on("load old messages", function (docs) {
+          $.each(docs, function () {
+            $("#old_msg").append(
+              "<li>" + this.name + ": " + this.text + "</li>"
+            );
+          });
         });
       });
     </script>
+    <style>
+      .header {
+        background-color: #25d355;
+        text-align: center;
+        color: #075e54;
+        font-size: 60px;
+      }
+      .body {
+        background-color: aliceblue;
+      }
+      .form {
+        background-color: aliceblue;
+        text-align: center;
+      }
+      .message {
+        text-align: center;
+        text: 20px;
+        padding: 10px;
+      }
+      .user {
+        color: #2acdae;
+        text-align: center;
+        font-size: 30px;
+      }
+      .space {
+        padding: 3px;
+        margin: 3px;
+      }
+    </style>
   </body>
 </html>

@@ -9,12 +9,48 @@
       crossorigin="anonymous"
     />
   </head>
-  <body class="container">
-    <h1></h1>
-    <form action="/login" method="POST">
-      <input type="text" name="username" placeholder="name" />
-      <input type="password" name="password" placeholder="pasword" />
-      <button>Submit</button>
+  <body class="body">
+    <h1 class="header">COViD HELPLine</h1>
+    <h1 class="user">LOGiN</h1>
+    <form action="/login" method="POST" class="form space container">
+      <div form-group comtainer>
+        <input
+          type="text"
+          name="username"
+          placeholder="name"
+          class="form-control space"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="pasword"
+          class="form-control space"
+        />
+        <button class="btn btn-info space">Submit</button>
+      </div>
     </form>
+    <style>
+      .header {
+        background-color: #25d355;
+        text-align: center;
+        color: #075e54;
+        font-size: 60px;
+      }
+      .body {
+        background-color: aliceblue;
+      }
+      .form {
+        background-color: aliceblue;
+        text-align: center;
+      }
+      .space {
+        padding: 3px;
+        margin: 3px;
+      }
+      .user {
+        color: #2acdae;
+        font-size: 50px;
+      }
+    </style>
   </body>
 </html>
